@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Обработка пользовательских данных</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f5f5f5;
+        }
+        .container {
+            background: white;
+            border-radius: 8px;
+            padding: 20px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        h1 {
+            color: #4a148c;
+            text-align: center;
+        }
+        .form-group {
+            margin-bottom: 15px;
+        }
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+        input[type="text"] {
+            width: 100%;
+            padding: 8px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            box-sizing: border-box;
+        }
+        button {
+            background-color: #4a148c;
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            border-radius: 4px;
+            cursor: pointer;
+            display: block;
+            margin: 20px auto;
+            font-size: 16px;
+        }
+        button:hover {
+            background-color: #311b92;
+        }
+        #result {
+            margin-top: 20px;
+            padding: 15px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Обработка пользовательских данных</h1>
+        <div class="form-group">
+            <label for="fullName">Введите ваше полное имя (ФИО):</label>
+            <input type="text" id="fullName" placeholder="Например: Иванов Иван Иванович">
+        </div>  
+        <button onclick="processUserData()">Обработать данные</button>
+        <div id="result"></div>
+    </div>
+    <script>
+        function processUserData() {
+            const fullName = document.getElementById('fullName').value.trim();
+            const resultDiv = document.getElementById('result');
+            
+            if (!fullName) {
+                alert('Введите ваше ФИО');
+                return;
+            }
+            
+            const parts = fullName.split(' ').filter(part => part !== '');
+            if (parts.length < 2) {
+                alert('Пожалуйста, введите полное ФИО (минимум имя и фамилию)');
+                return;
+            }
+            const surname = parts[0];
+            const firstName = parts[1];
+            const patronymic = parts.length > 2 ? parts[2] : '';
+            let greeting;
+            if (patronymic) {
+                greeting = `${surname} ${firstName.charAt(0).toUpperCase()}.${patronymic.charAt(0).toUpperCase()}.`;
+            } else {
+                greeting = `${surname} ${firstName.charAt(0).toUpperCase()}.`;
+            }
+            const surnameLength = surname.length;
+            const firstNameLength = firstName.length;
+            const patronymicLength = patronymic.length;
+            let lengthCalculation;
+            let totalChars;
+            if (patronymic) {
+                totalChars = surnameLength + firstNameLength + patronymicLength;
+                lengthCalculation = `${surnameLength} + ${firstNameLength} + ${patronymicLength} = ${totalChars}`;
+            } else {
+                totalChars = surnameLength + firstNameLength;
+                lengthCalculation = `${surnameLength} + ${firstNameLength} = ${totalChars}`;
+            }
+            let initials;
+            if (patronymic) {
+                initials = `${firstName.charAt(0).toUpperCase()}.${patronymic.charAt(0).toUpperCase()}.`;
+            } else {
+                initials = `${firstName.charAt(0).toUpperCase()}.`;
+            }
+            const result = `Здравствуйте, ${greeting}!<br>
+            Ваше имя состоит из ${lengthCalculation} букв.<br>
+            Ваши инициалы: ${initials}`;
+            
+            resultDiv.innerHTML = result;
+            resultDiv.style.display = 'block';
+        }
+    </script>
+</body>
+</html>
